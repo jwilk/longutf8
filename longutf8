@@ -1,0 +1,55 @@
+#!/usr/bin/python3
+
+'''
+generator of overlong UTF-8 sequences
+'''
+
+import argparse
+import sys
+
+def main():
+    doc = __doc__
+    if doc is not None:
+        doc = doc.strip()
+    ap = argparse.ArgumentParser(description=doc)
+    group = ap.add_mutually_exclusive_group()
+    for n in range(2, 7):
+        group.add_argument(
+            '-{}'.format(n),
+            dest='n', action='store_const', const=n,
+            help='produce {n}-byte sequences ({template})'.format(
+                n=n,
+                template=(
+                    '1' * n + '0' + 'x' * (7 - n) +
+                    (' 10' + (6 * 'x')) * (n - 1)
+                )
+            ),
+        )
+    ap.add_argument('text', metavar='TEXT', nargs='+')
+    options = ap.parse_args()
+    stdout = sys.stdout.buffer
+    for s in options.text:
+        for c in s:
+            n = options.n
+            if n is None:
+                n = len(c.encode('UTF-8')) + 1
+                assert n <= 6
+            c = ord(c)
+            limit = 1 << (1 + 5 * n)
+            if c >= limit:
+                raise ValueError('{n}-byte sequences can only encode characters smaller than U+{limit:04X}'.format(
+                    n=n,
+                    limit=limit,
+                ))
+            b = [None] * n
+            for j in range(n - 1, 0, -1):
+                b[j] = (1 << 7) | (c & ((1 << 6) - 1))
+                c >>= 6
+            b[0] = ((1 << 8) - (1 << (8 - n))) | c
+            stdout.write(bytes(b))
+        stdout.write(b'\n')
+
+if __name__ == '__main__':
+    main()
+
+# vim:ts=4 sw=4 et
