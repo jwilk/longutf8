@@ -2,12 +2,12 @@
 
    $ longutf8 --help
    usage: longutf8 [-h] [-2 | -3 | -4 | -5 | -6] TEXT [TEXT ...]
-   
+
    generator of overlong UTF-8 sequences
-   
+
    positional arguments:
      TEXT
-   
+
    optional arguments:
      -h, --help  show this help message and exit
      -2          produce 2-byte sequences (110xxxxx 10xxxxxx)
