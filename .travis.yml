@@ -19,7 +19,7 @@ install:
 - python3 -m pip install pydiatra $pyflakes
 - $if_pygments python3 -m pip install restructuredtext-lint pygments
 script:
-- ./longutf8 eggs
+- prove -v
 - python3 -m pydiatra .
 - python3 -m pyflakes .
 - $if_pygments restructuredtext-lint --encoding=UTF-8 README
