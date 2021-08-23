@@ -29,6 +29,11 @@ import sys
 
 0_0  # Python >= 3.6 is required
 
+def error(msg):
+    prog = argparse.ArgumentParser().prog
+    print(f'{prog}: error:', msg, file=sys.stderr)
+    sys.exit(1)
+
 def main():
     doc = __doc__
     if doc is not None:
@@ -60,7 +65,7 @@ def main():
             c = ord(c)
             limit = 1 << (1 + 5 * n)
             if c >= limit:
-                raise ValueError(f'{n}-byte sequences can only encode characters smaller than U+{limit:04X}')
+                error(f'{n}-byte sequences can only encode characters smaller than U+{limit:04X}')
             b = [None] * n
             for j in range(n - 1, 0, -1):
                 b[j] = (1 << 7) | (c & ((1 << 6) - 1))
