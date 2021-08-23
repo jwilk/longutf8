@@ -27,6 +27,8 @@ generator of overlong UTF-8 sequences
 import argparse
 import sys
 
+0_0  # Python >= 3.6 is required
+
 def main():
     doc = __doc__
     if doc is not None:
@@ -37,16 +39,14 @@ def main():
         ap._optionals.title = 'options'
     group = ap.add_mutually_exclusive_group()
     for n in range(2, 7):
+        template = (
+            '1' * n + '0' + 'x' * (7 - n) +
+            (' 10' + (6 * 'x')) * (n - 1)
+        )
         group.add_argument(
-            '-{}'.format(n),
+            f'-{n}',
             dest='n', action='store_const', const=n,
-            help='produce {n}-byte sequences ({template})'.format(
-                n=n,
-                template=(
-                    '1' * n + '0' + 'x' * (7 - n) +
-                    (' 10' + (6 * 'x')) * (n - 1)
-                )
-            ),
+            help=f'produce {n}-byte sequences ({template})',
         )
     ap.add_argument('text', metavar='TEXT', nargs='+')
     options = ap.parse_args()
@@ -60,10 +60,7 @@ def main():
             c = ord(c)
             limit = 1 << (1 + 5 * n)
             if c >= limit:
-                raise ValueError('{n}-byte sequences can only encode characters smaller than U+{limit:04X}'.format(
-                    n=n,
-                    limit=limit,
-                ))
+                raise ValueError(f'{n}-byte sequences can only encode characters smaller than U+{limit:04X}')
             b = [None] * n
             for j in range(n - 1, 0, -1):
                 b[j] = (1 << 7) | (c & ((1 << 6) - 1))
