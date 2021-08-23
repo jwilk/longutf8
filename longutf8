@@ -32,6 +32,9 @@ def main():
     if doc is not None:
         doc = doc.strip()
     ap = argparse.ArgumentParser(description=doc)
+    if sys.version_info < (3, 10):
+        # https://bugs.python.org/issue9694
+        ap._optionals.title = 'options'
     group = ap.add_mutually_exclusive_group()
     for n in range(2, 7):
         group.add_argument(

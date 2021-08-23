@@ -8,7 +8,7 @@
    positional arguments:
      TEXT
 
-   optional arguments:
+   options:
      -h, --help  show this help message and exit
      -2          produce 2-byte sequences (110xxxxx 10xxxxxx)
      -3          produce 3-byte sequences (1110xxxx 10xxxxxx 10xxxxxx)
