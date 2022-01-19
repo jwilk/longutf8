@@ -32,7 +32,8 @@ jobs:
       run: |
         python3 -m pip install --user pygments restructuredtext-lint
         rst-lint --level=info --encoding=UTF-8 README
-    - run: |
+    - name: run tests
+      run: |
         prove -v
 
 # vim:ts=2 sts=2 sw=2 et
