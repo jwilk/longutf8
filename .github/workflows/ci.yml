@@ -22,15 +22,15 @@ jobs:
         python-version: ${{matrix.python-version}}
     - name: run pydiatra
       run: |
-        python3 -m pip install --user pydiatra
+        python3 -m pip install pydiatra
         python3 -m pydiatra -v .
     - name: run pyflakes
       run: |
-        python3 -m pip install --user pyflakes
+        python3 -m pip install pyflakes
         python3 -m pyflakes .
     - name: check README syntax
       run: |
-        python3 -m pip install --user pygments restructuredtext-lint
+        python3 -m pip install pygments restructuredtext-lint
         rst-lint --level=info --encoding=UTF-8 README
     - name: run tests
       run: |
