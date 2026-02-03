@@ -23,6 +23,7 @@ def main():
     if doc is not None:
         doc = doc.strip()
     ap = argparse.ArgumentParser(description=doc)
+    ap.color = False
     if sys.version_info < (3, 10):
         # https://bugs.python.org/issue9694
         ap._optionals.title = 'options'
